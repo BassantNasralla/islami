@@ -8,22 +8,21 @@ import '../../../../utils/app_colors.dart';
 class AhadesTab extends StatefulWidget {
   @override
   State<AhadesTab> createState() => _AhadesTabState();
-  static String routename = 'ahadethTab';
 
+  static String routename = 'ahadethTab';
 }
 
 class _AhadesTabState extends State<AhadesTab> {
- List<String> ahadesNames = [];
- List<ahadethDetailsArgs> ahadethList = [];
+  List<ahadethDetailsArgs> ahadethList = [];
+
 
   @override
   Widget build(BuildContext context) {
-print(ahadethList);   readNameHadeth();
+   // print(ahadethList);
+    if(ahadethList.isEmpty) readNameHadeth();
     return Scaffold(
-
       backgroundColor: Colors.transparent,
       body: Column(
-
         children: [
           Expanded(
             flex: 35,
@@ -35,66 +34,69 @@ print(ahadethList);   readNameHadeth();
             ),
           ),
           Divider(
-            color: AppColor.primairyColor,
+            color: Theme.of(context).dividerColor,
             thickness: 3,
           ),
           Container(
-            child: Text('Sura Name',
-              style: TextStyle(
-                color: AppColor.accentColor,
-                fontWeight: FontWeight.w500,
-                fontSize: 19,
-              ),),
+            child: Text(
+              'الاحاديث',
+              style: Theme.of(context).textTheme.titleLarge
+            ),
           ),
           Divider(
-            color: AppColor.primairyColor,
+            color:Theme.of(context).dividerColor,
             thickness: 3,
           ),
-         Expanded(
+          Expanded(
             flex: 65,
             child: ListView.separated(
-              itemCount: ahadesNames.length,
+              itemCount: ahadethList.length,
               itemBuilder: (context, index) {
-                return buildHadethItems(context,index);
+                return buildHadethItems(context, index);
               },
               separatorBuilder: (context, index) {
                 return Divider(
-                  color: AppColor.primairyColor,
+                  color: Theme.of(context).dividerColor,
                   thickness: 3,
                 );
               },
             ),
           ),
-
-
         ],
       ),
     );
   }
- Widget buildHadethItems(BuildContext context,int index) {
-   return InkWell(
-     onTap: () {
-     },
-     child: Text(
-       ahadethList[index].hadethName, style: TextStyle(fontSize: 18,
-         fontWeight: FontWeight.w400,
-         color: AppColor.accentColor),
-       textAlign: TextAlign.center,
-     ),
-   );
- }
 
-readNameHadeth()async{
-    for ( int i = 1 ; i <= 50 ; i++ )
-    {
-      String hadethfile = await rootBundle.loadString("assets/files_ahadeth/h${i}.txt");
+  Widget buildHadethItems(BuildContext context, int index) {
+    //print(ahadethList);
+    return InkWell(
+      onTap: () {
+        Navigator.pushNamed(context, AhadethDetails.routename,
+            arguments: ahadethList[index]);
+      },
+      child: Text(
+        ahadethList[index].hadethName,
+        style: Theme.of(context).textTheme.bodyLarge,
+        textAlign: TextAlign.center,
+      ),
+    );
+  }
+
+  Future<void> readNameHadeth() async {
+    for (int i = 1; i <= 50; i++) {
+      String hadethfile =
+      await rootBundle.loadString("assets/files_ahadeth/h${i}.txt");
       List<String> singleAhadethLine = hadethfile.split('\n');
-      String hadethName = singleAhadethLine[0];
+     // print(hadethfile);
+      String hadethName = singleAhadethLine.removeAt(0);
       String content = singleAhadethLine.join('\n');
-      print('title: ${hadethName}');
-      print('content: $content');
-      ahadethList.add(ahadethDetailsArgs(hadethName, content));
+      ahadethDetailsArgs hadeth = ahadethDetailsArgs(hadethName, content);
+      ahadethList.add(hadeth);
     }
+    // ahadethList.forEach((ahadeth) {
+    //   print(ahadeth.hadethName);
+    // });
+    setState(() {});
 
-}
+  }
 }

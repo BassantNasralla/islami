@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:islami/provider/setting_provider.dart';
 import 'package:islami/screens/home/tabs/ahades/ahades_tab.dart';
 import 'package:islami/screens/home/tabs/quran_tab/quran_tab.dart';
-import 'package:islami/screens/home/tabs/radio/radio_tab.dart';
 import 'package:islami/screens/home/tabs/sebha_tab/sebha_tab.dart';
+import 'package:islami/screens/home/tabs/setting/setting.dart';
 import 'package:islami/utils/app_colors.dart';
-
+import 'package:provider/provider.dart';
 class home extends StatefulWidget {
  static String routename = 'home';
 
@@ -19,22 +20,25 @@ class _homeState extends State<home> {
     QuranTab(),
     AhadesTab(),
     SebhaTap(),
-    RadioTap()
+    settingTab()
   ];
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: Theme.of(context).copyWith(canvasColor: AppColor.primairyColor),
-      child: Container(
-        decoration: BoxDecoration(image: DecorationImage(image: AssetImage('assets/home_page.png'))),
+    SettingProvider provider = Provider.of(context);
+    return
+       Container(
+        decoration: BoxDecoration(image: DecorationImage(image:
+        AssetImage(
+        provider.currentTheme == ThemeMode.light?'assets/home_page.png':'assets/home_page_dark.png'
+        ))),
         child: Scaffold(
           body: tabs[currentIndex],
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
             centerTitle:true ,
-            title: Text('aslami',style: TextStyle(color: AppColor.accentColor,fontWeight:FontWeight.bold,fontSize: 20),),
+            title: Text('اسلامى',style:Theme.of(context).appBarTheme.titleTextStyle,),
           ),
           backgroundColor: Colors.transparent,
           bottomNavigationBar: BottomNavigationBar(
@@ -47,23 +51,21 @@ class _homeState extends State<home> {
            iconSize: 35,
             items: [
               BottomNavigationBarItem(
-                label:'Quran' ,
+                label:'القران' ,
                   icon: ImageIcon(AssetImage('assets/icon_quran.png'))),
               BottomNavigationBarItem(
-                label:'hadeth' ,
+                label:'الاحاديث' ,
                   icon: ImageIcon(AssetImage('assets/icon_hadeth.png'))),
               BottomNavigationBarItem(
-                label:'sebha' ,
+                label:'سبحة' ,
                   icon: ImageIcon(AssetImage('assets/icon_sebha.png'))),
               BottomNavigationBarItem(
-                label: 'radio',
-                  icon: ImageIcon(AssetImage('assets/icon_radio.png'))),
-
+                label: 'الاعدادات',
+                  icon: Icon(Icons.settings,size: 28,))
 
             ],
           ) ,
         ),
-      ),
     );
   }
 }

@@ -148,19 +148,16 @@ class QuranTab extends StatelessWidget {
             ),
           ),
           Divider(
-            color: AppColor.primairyColor,
+            color: Theme.of(context).dividerColor,
             thickness: 3,
           ),
           Container(
-            child: Text('Sura Name',
-              style: TextStyle(
-                  color: AppColor.accentColor,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 19,
-              ),),
+            child: Text('اسم السورة',
+              style:Theme.of(context).textTheme.titleLarge
+            ),
           ),
           Divider(
-            color: AppColor.primairyColor,
+            color: Theme.of(context).dividerColor,
             thickness: 3,
           ),
           Expanded(
@@ -172,7 +169,7 @@ class QuranTab extends StatelessWidget {
               },
               separatorBuilder: (context, index) {
                 return Divider(
-                  color: AppColor.primairyColor,
+                  color: Theme.of(context).dividerColor,
                   thickness: 3,
                 );
               },
@@ -193,9 +190,7 @@ class QuranTab extends StatelessWidget {
       },
       child: Text(
 
-        suraname[index], style: TextStyle(fontSize: 18,
-          fontWeight: FontWeight.w400,
-          color: AppColor.accentColor),
+        suraname[index], style:Theme.of(context).textTheme.bodyLarge,
         textAlign: TextAlign.center,
       ),
     );
