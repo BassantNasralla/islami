@@ -7,6 +7,7 @@ import 'package:islami/screens/home/tabs/ahades/ahades_tab.dart';
 import 'package:islami/screens/sura_details/sura_details.dart';
 import 'package:islami/utils/my_them.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 void main() {
 
   runApp(
@@ -18,12 +19,12 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+ late SettingProvider provider;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SettingProvider provider = Provider.of(context);
+    intPref();
     return MaterialApp(
       theme: MyTheme.lightTheme,
       themeMode: provider.currentTheme,
@@ -46,5 +47,10 @@ class MyApp extends StatelessWidget {
       },
       initialRoute: home.routename,
     );
+  }
+  intPref() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String theme = prefs.getString('them')?? 'light';
+    provider.changeCurrentMode(theme == 'light' ? ThemeMode.light : ThemeMode.dark);
   }
 }
